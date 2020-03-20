@@ -1,0 +1,13 @@
+Change 1
+
+*Remark 1 is accepted. Variable name "then" changed to "one_week_ago"
+
+*Remark 2 is not accepted. The problem is monkeypatch. When checking, it replaces EURO_RATE and USD_RATE, but the old values remain in the dictionary, therefore the test fails. (I could be wrong)
+
+*Remark 3 - partially accepted. Value & unit variable names changed.
+
+*Remark 4 is accepted. Made adjustments
+
+*Remark 5 is accepted. Made adjustments
+
+Не понял как довать многострочный комментарий поэтому добавил текстовый файл ¯\_(ツ)_/¯

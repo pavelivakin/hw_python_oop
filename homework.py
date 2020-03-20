@@ -88,3 +88,5 @@ r6 = Record(amount=1140, comment="Баночка чипсов.", date="24.02.201
 calc = Calculator(1000)
 calc.add_record(r1)
 print(calc.get_today_stats())
+
+# пытался дать многострочный комментарий при комите, судя по всему не получилось
