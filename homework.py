@@ -19,10 +19,10 @@ class Calculator:
 
     def get_week_stats(self):
         today = dt.datetime.now().date()
-        then = today - dt.timedelta(days=7)
+        one_week_ago = today - dt.timedelta(days=7)
         sum_amount = 0
         for record in self.records:
-            if then <= record.date <= today:
+            if one_week_ago <= record.date <= today:
                 sum_amount += record.amount
         return sum_amount
 
@@ -41,24 +41,24 @@ class CashCalculator(Calculator):
         return _convert_table[currency]
 
     def get_today_cash_remained(self, currency):
-        value = self.convert_table(currency)[0]
-        unit = self.convert_table(currency)[1]
-        cash_balance = (self.limit - self.get_today_stats()) / value
-        remained = round(cash_balance, 2)
+        currency_rate = self.convert_table(currency)[0]
+        currency_name = self.convert_table(currency)[1]
+        cash_balance = self.limit - self.get_today_stats()
+        cash_balance_converted = round(cash_balance / currency_rate, 2)
         if cash_balance == 0:
             return  "Денег нет, держись"
-        elif cash_balance < 0:
-            return  f"Денег нет, держись: твой долг - {abs(remained)} {unit}"   
-        elif cash_balance <= self.limit:
-            return f"На сегодня осталось {remained} {unit}"
+        elif cash_balance_converted < 0:
+            return  f"Денег нет, держись: твой долг - {abs(cash_balance_converted)} {currency_name}"   
+        elif cash_balance_converted <= self.limit:
+            return f"На сегодня осталось {cash_balance_converted} {currency_name}"
 
 
 class CaloriesCalculator(Calculator):
     def get_calories_remained(self):
         cal_balance = self.limit - self.get_today_stats()
-        if self.get_today_stats() < self.limit:
+        if cal_balance > 0:
             return f"Сегодня можно съесть что-нибудь ещё, но с общей калорийностью не более {cal_balance} кКал"
-        else:
+        elif cal_balance <= 0:
             return "Хватит есть!"
 
 
@@ -66,7 +66,7 @@ class Record:
     def __init__(self, amount, comment, date=None):
         self.amount = amount
         self.comment = comment
-        if date is None:
+        if not date:
             self.date = dt.datetime.now().date()
         else:
             self.date = dt.datetime.strptime(date, '%d.%m.%Y').date()
