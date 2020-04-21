@@ -41,15 +41,16 @@ class CashCalculator(Calculator):
         return _convert_table[currency]
 
     def get_today_cash_remained(self, currency):
-        currency_rate = self.convert_table(currency)[0]
+        currency_rate, currency_name = self.convert_table(currency)
         currency_name = self.convert_table(currency)[1]
         cash_balance = self.limit - self.get_today_stats()
         cash_balance_converted = round(cash_balance / currency_rate, 2)
-        if cash_balance == 0:
+        if cash_balance_converted == 0:
             return  "Денег нет, держись"
         elif cash_balance_converted < 0:
             return  f"Денег нет, держись: твой долг - {abs(cash_balance_converted)} {currency_name}"   
-        elif cash_balance_converted <= self.limit:
+        else:
+            cash_balance_converted <= self.limit
             return f"На сегодня осталось {cash_balance_converted} {currency_name}"
 
 
@@ -58,7 +59,8 @@ class CaloriesCalculator(Calculator):
         cal_balance = self.limit - self.get_today_stats()
         if cal_balance > 0:
             return f"Сегодня можно съесть что-нибудь ещё, но с общей калорийностью не более {cal_balance} кКал"
-        elif cal_balance <= 0:
+        else: 
+            cal_balance <= 0
             return "Хватит есть!"
 
 
@@ -69,7 +71,7 @@ class Record:
         if not date:
             self.date = dt.datetime.now().date()
         else:
-            self.date = dt.datetime.strptime(date, '%d.%m.%Y').date()
+            self.date = dt.datetime.strptime(date, "%d.%m.%Y").date()
 
 
 # создадим калькулятор денег с дневным лимитом 1000
